@@ -145,6 +145,9 @@ This reduces noise from volumetric sampling while preserving fine lensing detail
 
 ## Project Structure
 
+## Project Structure
+
+```
 PyEventHorizon
 │
 ├── engine
@@ -171,6 +174,7 @@ PyEventHorizon
 ├── requirements.txt
 ├── README.md
 └── .gitignore
+```
 
 
 ---
@@ -220,4 +224,5 @@ python main.py
 # Author
 
 **bsrin**
+
 
