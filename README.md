@@ -41,19 +41,19 @@ These control how strongly spacetime bends and twists around the singularity.
 
 ## Photon Trajectories
 
-Each pixel launches a photon ray with position **p** and direction **d**.
+Light rays follow the geodesics of curved spacetime.
 
-Instead of traveling in straight lines, the ray is bent by gravity.
+In general relativity this is described by the geodesic equation:
 
-The motion is governed by:
+d²xᵘ / dλ² + Γᵘₐᵦ (dxᵅ/dλ)(dxᵝ/dλ) = 0
 
-[
-\frac{d^2x^\mu}{d\lambda^2} + \Gamma^\mu_{\alpha\beta}\frac{dx^\alpha}{d\lambda}\frac{dx^\beta}{d\lambda}=0
-]
+Solving this equation analytically in real time is extremely expensive, so the engine integrates photon trajectories numerically using a **Runge–Kutta 4th Order (RK4)** solver on the GPU.
 
-These equations describe how light moves through curved spacetime.
+This allows the renderer to reproduce effects such as:
 
-Because solving them exactly is extremely expensive, the engine integrates the trajectory numerically using **Runge–Kutta 4th Order (RK4)**.
+* Einstein rings
+* multiple photon orbits
+* extreme light bending near the event horizon
 
 ---
 
@@ -75,32 +75,39 @@ This allows the renderer to reproduce effects like:
 
 Gas orbiting the black hole moves at relativistic speeds.
 
-Light emitted from this gas is modified by the **relativistic Doppler factor**:
+The observed brightness is modified by the relativistic Doppler factor:
 
-[
-D = \frac{1}{\gamma (1-\beta \cos\theta)}
-]
+D = 1 / (γ (1 − β cosθ))
+
+Where:
+
+* β = v / c
+* γ = 1 / √(1 − β²)
 
 This causes:
 
 * material moving **toward the observer** to appear brighter and bluer
 * material moving **away** to appear dimmer and redder
 
-This creates the asymmetric brightness seen in real black hole observations.
+This produces the asymmetric brightness seen in real black hole observations.
 
 ---
 
 ## Gravitational Redshift
 
-Photons escaping the gravitational well lose energy.
+Photons escaping a gravitational well lose energy.
 
-Their wavelength shifts according to:
+The observed frequency is approximately:
 
-[
-\nu_{obs} = \nu_{emit}\sqrt{1-\frac{r_s}{r}}
-]
+ν_obs = ν_emit √(1 − r_s / r)
 
-As rays approach the event horizon, light becomes increasingly redshifted and dim.
+Where:
+
+* r_s is the Schwarzschild radius
+* r is the photon distance from the black hole center
+
+As photons approach the event horizon, their wavelength stretches and the light becomes increasingly redshifted and dim.
+
 
 ---
 
@@ -136,9 +143,12 @@ This reduces noise from volumetric sampling while preserving fine lensing detail
 
 # Project Structure
 
-BLACKHOLE
+## Project Structure
+
+PyEventHorizon
 │
 ├── engine
+│   ├── __init__.py
 │   ├── camera.py
 │   ├── fbo.py
 │   ├── grid.py
@@ -146,6 +156,7 @@ BLACKHOLE
 │   └── window.py
 │
 ├── physics
+│   ├── __init__.py
 │   ├── entities.py
 │   └── params.py
 │
@@ -158,7 +169,9 @@ BLACKHOLE
 │
 ├── main.py
 ├── requirements.txt
-└── README.md
+├── README.md
+└── .gitignore
+
 
 ---
 
@@ -207,3 +220,4 @@ python main.py
 # Author
 
 **bsrin**
+
